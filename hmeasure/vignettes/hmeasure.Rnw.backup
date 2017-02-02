@@ -1,0 +1,529 @@
+%%
+%% Copyright 2007, 2008, 2009 Elsevier Ltd
+%%
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the 'Elsarticle Bundle' is
+%% given in the file `manifest.txt'.
+%%
+
+%% Template article for Elsevier's document class `elsarticle'
+%% with harvard style bibliographic references
+%% SP 2008/03/01
+%%
+%%
+%%
+%% $Id: elsarticle-template-harv.tex 4 2009-10-24 08:22:58Z rishi $
+%%
+%%
+\documentclass[a4paper]{article}
+%% Use the option review to obtain double line spacing
+%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,authoryear,1p,times]{elsarticle}
+%% \documentclass[final,authoryear,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,authoryear,3p,times]{elsarticle}
+%% \documentclass[final,authoryear,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,authoryear,5p,times]{elsarticle}
+%% \documentclass[final,authoryear,5p,times,twocolumn]{elsarticle}
+
+%% if you use PostScript figures in your article
+%% use the graphics package for simple commands
+%% \usepackage{graphics}
+%% or use the graphicx package for more complicated commands
+%% \usepackage{graphicx}
+%% or use the epsfig package if you prefer to use the old commands
+%% \usepackage{epsfig}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb,amsthm,color,amsmath,graphicx,url}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers after \end{frontmatter}.
+%\usepackage{lineno}
+
+%% natbib.sty is loaded by default. However, natbib options can be
+%% provided with \biboptions{...} command. Following options are
+%% valid:
+
+%%   round  -  round parentheses are used (default)
+%%   square -  square brackets are used   [option]
+%%   curly  -  curly braces are used      {option}
+%%   angle  -  angle brackets are used    <option>
+%%   semicolon  -  multiple citations separated by semi-colon (default)
+%%   colon  - same as semicolon, an earlier confusion
+%%   comma  -  separated by comma
+%%   authoryear - selects author-year citations (default)
+%%   numbers-  selects numerical citations
+%%   super  -  numerical citations as superscripts
+%%   sort   -  sorts multiple citations according to order in ref. list
+%%   sort&compress   -  like sort, but also compresses numerical citations
+%%   compress - compresses without sorting
+%%   longnamesfirst  -  makes first citation full author list
+%%
+%% \biboptions{longnamesfirst,comma}
+
+% \biboptions{}
+
+\newcommand{\rcom}[1]{#1}
+\newcommand{\bcom}[1]{\textcolor{blue}{#1}}
+\newcommand{\chris}[1]{}
+\newcommand{\citep}[1]{\cite{#1}}
+\begin{document}
+
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for the associated footnote;
+%% use the fnref command within \author or \address for footnotes;
+%% use the fntext command for the associated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for the associated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%%
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \address{Address\fnref{label3}}
+%% \fntext[label3]{}
+
+\title{Measuring classification performance: the \texttt{hmeasure} package.}
+
+%% use optional labels to link authors explicitly to addresses:
+\author{C. Anagnostopoulos, \url{canagnos@imperial.ac.uk}, \\ D.J. Hand, \url{d.j.hand@imperial.ac.uk}, 
+\\ Department of Mathematics, South Kensington Campus,\\ Imperial College London, London SW7 2AZ}
+\maketitle
+\begin{abstract}
+%% Text of abstract
+The ubiquity of binary classification problems has given rise to a prolific literature dedicated to the proposal of novel classification methods, as well as the incremental improvement of existing ones, that largely relies on accurate, coherent and universally accepted performance metrics. The inherent tradeoff between false positives and false negatives however complicates any attempt at providing a scalar summary of classification performance. Several measures have been proposed in the literature to overcome this difficulty, prominent among which is the Area Under the ROC Curve (AUC), implementations of which exist in almost all statistical programming languages. The AUC has recently come under criticism for handling the aforementioned tradeoff in a fundamentally incoherent manner, in the sense that it treats the relative severities of misclassifications differently when different classifiers are used. Α coherent alternative was proposed, known as the $H$ measure. The \texttt{hmeasure} package computes and reports the $H$ measure of classification performance, alongside most commonly used alternatives, including the AUC. It also provides convenient plotting routines that yield insights into the differences and similarities between the various metrics. It can also accommodate expert knowledge regarding misclassification costs, whenever that is available.
+\end{abstract}
+
+%\begin{keyword}
+%% keywords here, in the form: keyword \sep keyword
+%supervised classification \sep classifier performance \sep AUC \sep ROC curve %\sep $H$ measure
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+%\end{keyword}
+
+%%
+%% Start line numbering here if you want
+%%
+% \linenumbers
+
+%% main text
+\section{Introduction}
+\label{sec:intro}
+
+In binary classification, the objective is to design a rule that assigns objects to one of $2$ classes, often referred to as \emph{positive} (cases, or $1$s) and \emph{negative} (non-cases, or $0$s), on the basis of vectors of descriptive vectors of those objects. Rules are sometimes wholly designed on the basis of human expertise, but the most typical scenario of interest is that of \emph{supervised} classification, where rules are `trained' to recognise objects of each class using a `training' set of data which includes both descriptive vectors and true classes for a sample of objects. The `training' procedure may be heuristic, or it may represent an application of statistical estimation methodology, or artificial intelligence principles.  
+
+To assess the performance of a classifier, one applies to a `test' dataset of $n$ descriptive vectors, and compares the set of predicted classes, $\hat{c}_1, \dots, \hat{c}_n$, with the real classes of the objects in question, $c_1, \dots, c_n$, which were concealed from the classifier. The statistics of interest are then the so-called \emph{misclassification counts}, i.e., the number of False Negatives (FN) and False Positives (FP). These are often reported alongside their complements, the number of True Negatives (TN) and True Positives (TP), in a \emph{confusion matrix}:
+
+\begin{center}
+\begin{tabular}{c|c}
+TPs: $\sharp \{c_i =1, \hat{c}_i = 1\}$ & 
+FPs: $\sharp \{c_i =0, \hat{c}_i = 1\}$ \\\hline
+FNs: $\sharp \{c_i =1, \hat{c}_i = 0\}$ & 
+TNs: $\sharp \{c_i =0, \hat{c}_i = 0\}$
+\end{tabular}
+ \end{center}
+The most widely used summary of the above is the \emph{Error Rate} (ER), which is simply the total misclassification count divided by $n$, i.e., $\text{ER} = \frac{\text{FN}+\text{FP}}{n}$.
+
+The confusion matrix only offers a partial picture, however, because it is almost always possible to `tune a classifier' in order to trade off FPs for FNs, or vice versa. To illustrate this point, on one extreme one may classify all objects as positive regardless of their description, enabling one to never ``miss a case'' (FN=0), at the cost of a large number of ``false alarms'' (high FP). Similarly, it is possible to na\"ively decrease FPs at the cost of a large number of FNs.
+
+Such tuning can occur naturally in most classifiers, as usually these are internally split into two parts: \rcom{first,} a mapping is built that turns the descriptive feature vector $\mathbf{x}$  into a scalar `score' $s(\mathbf{x}) \in \mathbb{R}$; \rcom{and second,} a threshold, $t$, is chosen, with which the score is compared, such that objects are classified as positive if their score is greater than $t$ and otherwise as negative:
+\begin{equation}
+ \text{Classifier(t):}\quad \hat{c}(\mathbf{x}) = 
+\begin{cases}
+1, &\text{ if }s(\mathbf{x}) > t\\
+0, &\text{ if }s(\mathbf{x}) \leq t.
+\end{cases}\label{eq:classifier}
+\end{equation}
+In this work we are only concerned with such \emph{scoring} classifiers, which form the prevalent type in the supervised classification literature. We also note that this may not be directly obvious to the end user of classification technology, due to the fact that software implementations will typically rely on a \emph{preset} value for $t$ to directly output predicted labels, concealing scores by default (see Section \ref{sec:2}). 
+
+The threshold $t$ in (\ref{eq:classifier}) acts as a natural \emph{tuning parameter}, controlling the rate of FPs relative to that of FNs. For instance, for $t=-\infty$, $\text{FN} = 0$, whereas for $t=\infty$, $\text{FP}=0$. In other words, the performance of any given classifier in terms of misclassification counts (and hence also in terms of ER) \emph{varies} with $t$, and consequently, to evaluate such a classifier, or compare two or more such classifiers, one needs to either appropriately fix $t$, or somehow average over its values. Several solutions have been produced in the literature to overcome this difficulty. Some of these propose a certain setting for $t$ and then employ misclassification counts as the measure of performance. As explained earlier, what is commonly reported as `Error Rate', is in fact just $\text{ER}(\tilde{t})$ where $\tilde{t}$ is whatever default value is employed by the classifier implementation in question. More sophisticated approaches attempt to take a balanced view across several, or even all possible settings for $t$. In the remainder of this document, we describe a representative selection of such metrics, taking the opportunity to illustrate the use of the \texttt{hmeasure} $R$ package in computing and reporting these metrics.
+
+\section{Misclassification counts and the ROC curve}\label{sec:2}
+We will center the discussion around the example employed in the \texttt{hmeasure} package, which involves the Pima dataset from the MASS library. We load this dataset and separate it into training and test: 
+<<a>>=
+library(MASS)
+library(class)
+data(Pima.te)
+
+# sample training and test dataset
+n <- dim(Pima.te)[1]
+ntrain <- floor(2*n/3)
+ntest <- n-ntrain
+
+pima.train <- Pima.te[1:ntrain,]
+pima.test <- Pima.te[(ntrain+1):n,]
+@
+This stores the training and test data in a matrix format, where the last, $8$th column, called ``type'', is the class label, given as a factor with two levels:
+<<>>=
+str(pima.test[,8])
+@
+We then consider the Linear Discriminant Analysis (LDA) classifier implemented in $R$ as part of the \texttt{class} package, and provide the training and test datasets as its input, to obtain the following output:
+<<>>=
+# LDA
+pima.lda <- lda(formula=type~., data=pima.train)
+class.lda <- predict(pima.lda,newdata=pima.test)
+@
+By inspection we observe that the output of the \texttt{knn} function largely agrees with the predicted labels.
+<<>>=
+str(class.lda)
+@
+
+Among such imperfect classifiers, the question is raised as to which one can claim to be `better' - in a suitable sense.  A great many ways of measuring the relative performance of classification rules have been proposed. These include measures based on misclassification counts, such as \emph{sensitivity}, \emph{specificity}, \emph{positive} and \emph{negative predictive value}, \emph{proportion correct} and its complement \emph{error rate}, the \emph{$F$ measure}, and others (for discussion, see, for example, \cite{hand1997,hand2001,hand2005,hand2011,zhou2002,pepe2003,gonen2007,krzanowski2009}).  {Measuring performance on the basis of misclassification counts is complicated by the fact that, for each classifier, the threshold $t$ remains a free parameter that crucially affects performance, as it negotiates the tradeoff between \emph{false positive} and \emph{false negative} classifications: a very large value for $t$ will tend to classify almost all objects as class $0$, whereas a very low value for $t$ will tend to err on the other side, classifying most objects as class $1$. This is often illustrated by the Receiver Operating Characteristic (ROC) Curve, which is obtained by plotting the True Positive Rate (TPR) of the classifier, given by $1-F_1(t)$,  against its False Positive Rate (FPR), given by $1-F_0(t)$,  for all possible values of the threshold. ROC curves extend from $(0,0)$ to $(1,1)$  by gradually sacrificing false negatives for false positives.}
+That is, the distributions of the scores of the two classes, {given by 
+\[
+F_1(t) = P(s(\mathbf{x}) < t \mid 1), \; F_0(t) = P(s(\mathbf{x}) < t \mid 0)
+\]}
+will in general have overlapping support.  
+{The majority of the performance measures mentioned above handle the dependence of performance on the free parameter $t$ either by requiring that the threshold should be fixed by the user, or by implicitly specifying a value for it.} {For instance, the error rate of a classifier is given by setting the {threshold} to the value that minimises the total number of erroneous classifications:
+\[
+ER = \underset{t}{\text{min}}\, \{\pi_0(1-F_0(t)) + \pi_1 F_1(t)\}
+\]
+where $\pi_0$ and $\pi_1$ are the respective proportions of class $0$ and class $1$ objects in the population. Justifying this, or any other predetermined choice of threshold is difficult, mainly because the relative importance of the two different types of misclassification errors will in general depend on the problem, so that the threshold may often not be chosen until the rule is applied in practice.} To sidestep this problem, the Area Under the ROC curve (\textit{AUC})  measure (also called the $c$-statistic, and equivalent to the \emph{Gini coefficient}, which is a chance-standardised version) is very widely used. {The \textit{AUC} can be intuitively motivated by the observation that if one ROC curve lies strictly above another, then the respective classifier performs better at all threshold levels. This suggests the area under the curve as a possible scalar summary of \emph{aggregate} performance.} The \textit{AUC} however admits several other interpretations.  It is the probability that a randomly chosen member of class $0$ will yield a score lower than a randomly chosen member of class $1$ -- and from this it follows that it is the same as the test statistic used in the Mann-Whitney-Wilcoxon two sample nonparametric test to compare two distributions.  It is the average sensitivity if specificity values are chosen uniformly, and the average specificity if sensitivity values are chosen uniformly.  It is  also a linear transformation of the proportion correctly classified if the threshold is randomly chosen from an arbitrary linear combination of the class score distributions \citep{hand2011b}, with the coefficients of the transformation being functions of the class priors (the relative proportions of objects belonging to each class, denoted $\pi_0$ and $\pi_1$ for classes $0$ and $1$ respectively in what follows).  \rcom{This interpretation is particularly revealing as }it shows explicitly that the \textit{AUC} is an aggregate or portmanteau measure, equivalent to integrating over a range of possible values for the threshold $t$. 
+
+Unfortunately, in a series of papers, \citep{hand2009, hand2010a, hand2011b} it was demonstrated that when the classification of an object is to depend only on the score of that object and the threshold with which it is to be compared (and not, for example, on the scores of other objects) then the area under the ROC curve is an incoherent performance measure, in the sense described immediately below.
+
+For a given threshold $t$, the four probabilities in the cross-classification table of true class by predicted class are constrained by two relationships: that the total proportion in class $0$ is $\pi_0$ and the total proportion in class $1$ is $\pi_1 = 1-\pi_0$. This thus leaves two degrees of freedom, which have to be reduced to one to provide a univariate measure which can be used to compare classifiers.  Different performance measures effect this reduction in different ways. For instance, the error rate is simply the weighted average, with weights given by the class proportions in the population, of the proportions of each class misclassified; the \textit{KS} statistic is (proportional to) the minimum (by choice of $t$) of the overall proportion misclassified if the proportions misclassified in each class are equally weighted; etc.. The \textit{AUC} sidesteps the requirement to specify $t$ by integrating a weighted misclassification rate over a distribution of $t$ values, as described above.  However, \cite{hand2009,hand2010a} showed that, when considered in terms of the ratio of the severity of misclassifying a class 0 objects as class 1 to the severity of misclassifying a class 1 object to class 0, this implies that different classifiers adopt different distributions for this ratio. 
+This is nonsensical, since this ratio is a property of the problem, not the instrument used to make the classification: the distribution of the ratio of misclassification severities must be the same for all classifiers applied to a given problem.  \cite{hand2011b} reformulated the argument in terms of calibrated score distributions, which allowed them to avoid the need to introduce reference to misclassification costs.
+
+\section{Choosing the threshold distribution}
+
+To overcome the deficiency of the \textit{AUC} described above, \cite{hand2009,hand2010a} defined an alternative measure, the $H$ measure, which proposed using a fixed relative misclassification severity distribution. {We provide here a very brief outline of the measure, and refer to \cite{hand2009} for more details.} Let $c$ in $[0,1]$ denote the `cost' of misclassifying a class $0$ object as class $1$, and $1-c$ the cost of misclassifying a class $1$ object as class $0$. {Consider then the following \emph{loss} function, which represents the total cost incurred:
+\[
+L(c;t) = c\pi_0 (1-F_0(t)) + (1-c)\pi_1 F_1(t)
+\]
+In this context it is natural to choose the threshold $t$ to minimise the total loss, yielding a \emph{minimum loss} of $L(c;T_c)$, where
+\[
+T_c = \underset{t}{\text{argmin}}\,L(c;t)
+\]
+In this setup, the threshold is no longer a free parameter, but rather fully determined by the normalised cost, $c$. However, as we explained earlier, fixing the cost $c$ to a single value in advance is too strict a requirement. Instead, it is more realistic to specify a \emph{distribution}, $w(c)$, over different values of $c$:
+\[
+L = \int_c L(c;T_c)w(c)dc
+\]}
+And this is exactly what the \textit{AUC} does. However, the \textit{AUC} requires that $w(c)$ differs between different classifiers, so that different measures are being used to evaluate different classifiers. In contrast, the $H$ measure requires that the same w distribution is used for all classifiers. 
+
+Although for the $H$ measure the distribution $w(c)$ is fixed -- in the sense that any given researcher should choose a distribution and use that for all classifiers being applied on the given problem -- it is not appropriate to objectively specify a universal distribution that all researchers should use for all problems. This is because different researchers may well have different beliefs about the relative misclassification severities, and because it is entirely likely that different problems will merit different distributions.  There thus remains an intrinsic and fundamental arbitrariness about the choice of $w(c)$.
+
+To tackle this, \cite{hand2009} suggested that the value of the $H$ measure should be reported for two distinct relative severity distributions.  One should be a subjective distribution, chosen by each researcher for each problem (but the same for all classifiers applied by that researcher to that problem, of course).  The other should be a universal standard, and \cite{hand2009} proposed the $Beta(2,2)$ distribution.  However, in response to experience from a number of researchers in using the $H$ measure on a wide variety of problems we would now like to propose a modified universal standard.
+
+In many problems the class sizes are extremely unbalanced.  For example, one of the researchers who contacted us had $\pi_1 = 0.024$ and another had $\pi_1 = 0.00032$.  In such cases, it would be rare that one would want to use a symmetric relative severity distribution because of the symmetry this implies about the way the classes are treated. Instead, one would probably want to treat misclassifications of the smaller class as more serious than those of the larger class: \rcom{if they are treated as of equal severity then very little loss would be made by assigning everything to the larger class.}  To take an example, in credit card transaction fraud detection \citep{hand2008b}, most transactions are legitimate -- the class sizes are very unbalanced.  Moreover, misclassifying a legitimate transaction as fraudulent may incur only the cost of an investigatory phone call, plus some small fraction of the associated wage bill of the employee making the call, as well as a small part of the bank's infrastructure costs.  But all these are likely to add up to far less than the cost of misclassifying a fraudulent transaction as legitimate -- which could easily run into the thousands of dollars.
+
+
+
+Recognising that one would not want to use a symmetric distribution, and not wishing to choose one subjectively (despite our recommendation that they should do so, noted above), the researchers sought another standard alternative.  In response to this, we propose the following.
+
+Consider first the \textit{KS} statistic. This chooses $c$ so that the cost incurred if all the class $0$ objects and none of the class $1$ objects are misclassified, is equal to the cost incurred if all the class $1$ objects and none of the class $0$ objects are misclassified.  This results in a larger misclassification cost for each of the objects from the smaller class, and equal costs if the class sizes are equal.  In particular, of course, in cases when the classes are very unbalanced it gives dramatically larger costs to misclassifications from the smaller class.  In the fraud detection example above, if there are $1000$ legitimate transactions to every fraudulent credit card transaction (which is in fact the order of magnitude of the ratio in such problems), then the cost attributed to misclassifications of a fraudulent transaction is set at $1000$ times the cost of misclassifying a legitimate transaction.  In general, the \textit{KS} achieves this effect by setting $c=\pi_1$ and $1-c = \pi_0$.  It is the essence of the $H$ measure (and indeed the principle underlying the \textit{AUC}) that we want to avoid choosing a single fixed value of $c$, and instead pick a distribution.  We therefore propose choosing a distribution such that the mode of the relative misclassification severity distribution in the $H$ measure should be at $c=\pi_1$.  This means that, for example, in highly unbalanced situations, one regards it as more likely that misclassifications from the smaller class will be more serious than misclassifications from the larger class. 
+
+{For a $Beta(\alpha,\beta)$ distribution with $\alpha > 1$ and $\beta > 1$, the mode is: 
+\[
+\frac{\alpha-1}{\alpha+\beta-2}
+\]
+We can set this mode equal to $\pi_1$ in several ways. For instance, we may set
+\[
+\beta = 1 + (\alpha-1)\frac{\pi_0}{\pi_1}.
+\]
+leaving open the choice of $\alpha$, with $\alpha=2$ being a reasonable default value on the grounds that it gives a unimodal distribution which is not too extreme.  The result is a $Beta(2,\pi_1^{-1})$ distribution, which, for fully balanced problems with $\pi_0 = \pi_1$,  reduces to $Beta(2,2)$. Nevertheless, 
+this distribution suffers from the disadvantage that it treats its two parameters $\alpha$ and $\beta$ asymmetrically. To understand why this is undesirable, consider $Beta(\alpha(\pi_0,\pi_1), \beta(\pi_0,\pi_1))$ to be the general form of a Beta distribution whose parameters are selected using the class priors. Since switching the class labels around would have the effect of replacing $(\pi_0,\pi_1)$ with $(\pi_1,\pi_0)$, and $c$ with $1-c$, we must require of our cost distribution that:
+\begin{equation}
+\label{eq:symmetry_cons}
+c \sim Beta(\alpha(\pi_0,\pi_1), \beta(\pi_0,\pi_1)) \; \Rightarrow \; 1-c\sim Beta(\alpha(\pi_1,\pi_0), \beta(\pi_1,\pi_0))
+\end{equation}
+Noting that, for all Beta distributions,
+\[
+c \sim B(\alpha,\beta) \Rightarrow 1-c\sim Beta(\beta,\alpha)
+\]
+we immediately observe that property (\ref{eq:symmetry_cons}) does not hold of $Beta(2,\pi_1^{-1})$. Instead, we may enforce symmetry by setting $\alpha+\beta = k$. To place the mode to a value $\tilde{c}$, we then need to specify $\alpha$ and $\beta$ as follows:
+\begin{equation}
+\label{eq:better}
+\alpha = (k-2)\tilde{c} + 1, \; \beta = (k-2)(1-\tilde{c}) + 1, \text{ for }k \geq 3
+\end{equation}
+Different values of $k$ in (\ref{eq:better}) make the proposed distribution narrower or wider, as illustrated in Figure \ref{fig:width}, but leave the mode unaffected. A sensible default value for $k$ is $3$, which, together with $\tilde{c} = \pi_1$, yields the $Beta(\pi_1+1,\pi_0+1)$ distribution as the default universal standard for the $H$-measure. The symmetry requirement is illustrated in Figure \ref{fig:symmetry}, where a $Beta(2,\pi_1^{-1})$ and the proposed default distribution are plotted alongside the respective distributions obtained by switching the shape parameters around.}
+\begin{figure}
+\centering
+<<fig=TRUE,echo=FALSE>>=
+k=3
+pi1 = 0.3
+pi0 = 1-pi1
+alpha_old = 2
+beta_old = 1/pi1
+alpha_new = (k-2)*pi1+1
+beta_new = (k-2)*pi0+1
+c = seq(0,1,0.01)
+y.l = c(0,2.5)
+par(mfrow=c(1,2))
+plot(c,dbeta(c,alpha_new,beta_new),type="l",col="black",
+xlab="c", ylab="w(c)",ylim=y.l,
+main="Proposed Distribution",cex.main=0.8)
+lines(c,dbeta(c,beta_new,alpha_new),col="grey",
+xlab="c", ylab="w(c)",ylim=y.l)
+legend("topright",legend=c(expression(Beta(alpha,beta)),expression(Beta(beta,alpha))),lty=c(1),lwd=1.5,col=c("black","gray"))
+plot(c,dbeta(c,2,1/pi1),type="l",col="black",
+xlab="c", ylab="w(c)",ylim=y.l, 
+main="Unsuitable asymmetric distribution",cex.main=0.8)
+lines(c,dbeta(c,2,1/pi0),col="grey",
+xlab="c", ylab="w(c)",ylim=y.l)
+legend("topright",legend=c(expression(Beta(alpha,beta)),expression(Beta(beta,alpha))),lty=c(1),lwd=1.5,col=c("black","gray"))
+@
+\caption{\label{fig:symmetry}The proposed distribution's dependence on $(\pi_0,\pi_1)$ must be such that employing the pair $(\pi_1,\pi_0)$ instead yields a reflected version of the distribution.}
+\end{figure}
+
+\begin{figure}
+\centering
+<<fig=TRUE,echo=FALSE>>=
+y.l = c(0,3)
+
+k = 2;
+alpha_new = (k-2)*pi1+1
+beta_new = (k-2)*pi0+1
+plot(c,dbeta(c,alpha_new,beta_new),
+type="l",col="black",lty=k-1,
+xlab="c", ylab="w(c)",ylim=y.l)
+legend.name <- "k=2"
+
+k = 3;
+alpha_new = (k-2)*pi1+1
+beta_new = (k-2)*pi0+1
+lines(c,dbeta(c,alpha_new,beta_new),
+type="l",col="gray",lty=k-1,
+xlab="c", ylab="w(c)",ylim=y.l)
+legend.name <- c(legend.name,paste("k=",k,("(default)"),sep=""))
+
+k = 4;
+alpha_new = (k-2)*pi1+1
+beta_new = (k-2)*pi0+1
+lines(c,dbeta(c,alpha_new,beta_new),
+type="l",col="black",lty=k-1,
+xlab="c", ylab="w(c)",ylim=y.l)
+legend.name <- c(legend.name,paste("k=",k,sep=""))
+
+k = 7;
+alpha_new = (k-2)*pi1+1
+beta_new = (k-2)*pi0+1
+lines(c,dbeta(c,alpha_new,beta_new),
+type="l",col="black",lty=4,
+xlab="c", ylab="w(c)",ylim=y.l)
+legend.name <- c(legend.name,paste("k=",k,sep=""))
+
+
+k = 10;
+alpha_new = (k-2)*pi1+1
+beta_new = (k-2)*pi0+1
+lines(c,dbeta(c,alpha_new,beta_new),
+type="l",col="black",lty=5,
+xlab="c", ylab="w(c)",ylim=y.l)
+legend.name <- c(legend.name,paste("k=",k,sep=""))
+
+legend("topright",legend=legend.name,lty=seq(1,6,1),lwd=1.5,
+col=c("black","gray"))
+@
+\caption{\label{fig:width}The parameter $k$ controls the dispersion about the mode, so that larger values of $k$ may be used to reflect higher degrees of certainty about the setting $c = \pi_1$.}
+\end{figure}
+
+Clearly, in contexts where domain knowledge suggests a reasonable \emph{approximate} `guess' $\tilde{c}$ for the normalised cost $c$, this value may be used in equation (\ref{eq:better}) in place of $\tilde{c} = \pi_1$ to place the mode on the cost estimate. In such a case,  the parameter $k$ controls the degree of certainty about that estimate (see Figure \ref{fig:width}). In certain contexts it may be easier to elicit an expert opinion about the \emph{relative severity ratio} $r$ instead, i.e., the ratio of the costs of the two types of misclassification errors given by $r = \frac{c}{1-c}$. The quantity $r$ measures how much more severe misclassifying a class 0 instance is than misclassifying a class 1 instance. Given a `guess' $\tilde{r}$ and inverting its relationship with $c$, one obtains $\tilde{c} = \frac{\tilde{r}}{1+\tilde{r}}$ which may be employed in (\ref{eq:better}) as before, to produce a distribution whose single mode is placed on the expert guess for the relative misclassification cost. In either case, the proposed construction reduces the burden to the individual researcher of fully specifying a $Beta(\alpha,\beta)$, and will hopefully encourage users to deploy domain knowledge whenever possible (which we argue is possible more often than not), making full use of the expressive power of the $H$ measure. However, in the absence of such domain knowledge, and for the purpose of making available a universal standard, we propose here that the setting $c = \pi_1$ (i.e., $r = \pi_1/\pi_0)$ is in fact a better default than our earlier suggestion $c = 0.5$ (i.e., $r=1$) which underlied the $Beta(2,2)$.
+
+\section{The hMeasure package}
+The HMeasure has been implemented as an R package, in CRAN. 
+
+\section{Simulation study}
+We compared the results of the $H$ measure on a combination of $9$ classifiers and $11$ datasets, all publicly available, and supplied by the RWeka interface of Weka to $R$. The objective is to confirm that the $H$ measure can indeed lead to different classifier rankings than the AUC, or the AUCH, as well as to show  the effect of the prior on results, in particular for heavily imbalanced datasets.
+%\begin{figure}
+%\includegraphics[width=\textwidth]{../../code_data/package_beta/vsweka/pvalues.pdf}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[width=0.95\textwidth]{../../code_data/package_beta/vsweka/scatter.pdf}
+%\end{figure}
+\section{Future work}
+Requiring just more implementation:
+\begin{itemize}
+ \item incremental updates
+\end{itemize}
+Requiring fundamental research:
+\begin{itemize}
+ \item confidence intervals
+ \item multiple classes
+\end{itemize}
+
+
+\section{Conclusion}
+
+\cite{hand2009, hand2010a} showed that, when classifications were to be based solely on the score of an object and the threshold with which it was to be compared, the \textit{AUC} was fundamentally incoherent in the sense that it treated different classification rules differently: it is equivalent to letting the choice of measuring instrument depend on the object being measured.  To overcome this problem, he proposed the $H$ measure, which fixes the distribution in a classifier-independent manner, so leading to an invariant measure.  This distribution cannot be chosen in a fully objective way across all problem domains, as it will depend on the problem and the researcher's beliefs about the consequences of the different kinds of misclassification, but the $H$ measure fixes it for a given researcher working on a given problem.  For this reason, \cite{hand2009, hand2010a} proposed that the $H$ measure with two forms of distribution should be reported for each study: \rcom{first,} a subjective distribution based on the researcher's beliefs; \rcom{second,} a universal standard distribution.  For the latter, he suggested a $Beta(2,2)$ distribution.
+
+Now that experience with the $H$ measure is accumulating, and based on correspondence with researchers throughout the world who have used it, \rcom{it seems more suitable to introduce a standard distribution with an asymmetric relative cost distribution for unbalanced problems, that also reduces to the $Beta(2,2)$ distribution for balanced problems.} This paper introduces exactly such a candidate, the $Beta(\pi_1+1,\pi_0+1)$ distribution.
+
+%% The Appendices part is started with the command \appendix;
+%% appendix sections are then done as normal sections
+%% \appendix
+
+%% \section{}
+%% \label{}
+
+%% References
+%%
+%% Following citation commands can be used in the body text:
+%%
+%%  \citet{key}  ==>>  Jones et al. (1990)
+%%  \citep{key}  ==>>  (Jones et al., 1990)
+%%
+%% Multiple citations as normal:
+%% \citep{key1,key2}         ==>> (Jones et al., 1990; Smith, 1989)
+%%                            or  (Jones et al., 1990, 1991)
+%%                            or  (Jones et al., 1990a,b)
+%% \cite{key} is the equivalent of \citet{key} in author-year mode
+%%
+%% Full author lists may be forced with \citet* or \citep*, e.g.
+%%   \citep*{key}            ==>> (Jones, Baker, and Williams, 1990)
+%%
+%% Optional notes as:
+%%   \citep[chap. 2]{key}    ==>> (Jones et al., 1990, chap. 2)
+%%   \citep[e.g.,][]{key}    ==>> (e.g., Jones et al., 1990)
+%%   \citep[see][pg. 34]{key}==>> (see Jones et al., 1990, pg. 34)
+%%  (Note: in standard LaTeX, only one note is allowed, after the ref.
+%%   Here, one note is like the standard, two make pre- and post-notes.)
+%%
+%%   \citealt{key}          ==>> Jones et al. 1990
+%%   \citealt*{key}         ==>> Jones, Baker, and Williams 1990
+%%   \citealp{key}          ==>> Jones et al., 1990
+%%   \citealp*{key}         ==>> Jones, Baker, and Williams, 1990
+%%
+%% Additional citation possibilities
+%%   \citeauthor{key}       ==>> Jones et al.
+%%   \citeauthor*{key}      ==>> Jones, Baker, and Williams
+%%   \citeyear{key}         ==>> 1990
+%%   \citeyearpar{key}      ==>> (1990)
+%%   \citetext{priv. comm.} ==>> (priv. comm.)
+%%   \citenum{key}          ==>> 11 [non-superscripted]
+%% Note: full author lists depends on whether the bib style supports them;
+%%       if not, the abbreviated list is printed even when full requested.
+%%
+%% For names like della Robbia at the start of a sentence, use
+%%   \Citet{dRob98}         ==>> Della Robbia (1998)
+%%   \Citep{dRob98}         ==>> (Della Robbia, 1998)
+%%   \Citeauthor{dRob98}    ==>> Della Robbia
+
+
+%% References with bibTeX database:
+\bibliographystyle{plain}
+
+
+\begin{thebibliography}{10}
+
+\bibitem{gonen2007}
+M.~G\"{o}nen.
+\newblock Analyzing receiver operating characteristic curves with sas.
+\newblock Technical report, SAS Institute: Cary, NC., 2007.
+
+\bibitem{hand1997}
+D.J. Hand.
+\newblock {\em Construction and assessment of classification rules}.
+\newblock Wiley: Chichester., 1997.
+
+\bibitem{hand2001}
+D.J. Hand.
+\newblock Measuring diagnostic accuracy of statistical prediction rules.
+\newblock {\em Statistica Neerlandica}, 53:3--16., 2001.
+
+\bibitem{hand2005}
+D.J. Hand.
+\newblock Good practice in retail credit scorecard assessment.
+\newblock {\em Journal of the Operational Research Society}, 56:1109--1117,
+  2005.
+
+\bibitem{hand2009}
+D.J. Hand.
+\newblock Measuring classifier performance: a coherent alternative to the area
+  under the {ROC} curve.
+\newblock {\em Machine Learning}, 77:103--123, 2009.
+
+\bibitem{hand2010a}
+D.J. Hand.
+\newblock Evaluating diagnostic tests: the area under the {ROC} curve and the
+  balance of errors.
+\newblock {\em Statistics in Medicine}, 29:1502--1510, 2010.
+
+\bibitem{hand2011}
+D.J. Hand.
+\newblock Assessing the performance of classification, signal detection, and
+  diagnostic methods.
+\newblock Technical report, Department of Mathematics, Imperial College,
+  London, 2011.
+
+\bibitem{hand2011b}
+D.J. Hand and C.~Anagnostopoulos.
+\newblock When is the area under the roc curve an appropriate measure of
+  classifier performance?
+\newblock Technical report, Department of Mathematics, Imperial College,
+  London, 2011.
+
+\bibitem{hand2008b}
+D.J. Hand, C.~Whitrow, N.M. Adams, P.~Juszczak, and D.~Weston.
+\newblock Performance criteria for plastic card fraud detection tools.
+\newblock {\em Journal of the Operational Research Society}, 59:956--962, 2008.
+
+\bibitem{krzanowski2009}
+W.J. Krzanowski and D.J. Hand.
+\newblock {\em {ROC} curves for continuous data}.
+\newblock Chapman and Hall, 2009.
+
+\bibitem{pepe2003}
+M.S. Pepe.
+\newblock {\em The Statistical Evaluation of Medical Tests for Classification
+  and Prediction}.
+\newblock Oxford University Press: Oxford, 2003.
+
+\bibitem{zhou2002}
+X-H. Zhou, N.A. Obuchowski, and D.K. McClish.
+\newblock {\em Statistical Methods in Diagnostic Medicine}.
+\newblock Wiley: New York, 2002.
+
+\end{thebibliography}
+
+%% Authors are advised to submit their bibtex database files. They are
+%% requested to list a bibtex style file in the manuscript if they do
+%% not want to use elsarticle-harv.bst.
+
+%% References without bibTeX database:
+
+% \begin{thebibliography}{00}
+
+%% \bibitem must have one of the following forms:
+%%   \bibitem[Jones et al.(1990)]{key}...
+%%   \bibitem[Jones et al.(1990)Jones, Baker, and Williams]{key}...
+%%   \bibitem[Jones et al., 1990]{key}...
+%%   \bibitem[\protect\citeauthoryear{Jones, Baker, and Williams}{Jones
+%%       et al.}{1990}]{key}...
+%%   \bibitem[\protect\citeauthoryear{Jones et al.}{1990}]{key}...
+%%   \bibitem[\protect\astroncite{Jones et al.}{1990}]{key}...
+%%   \bibitem[\protect\citename{Jones et al., }1990]{key}...
+%%   \harvarditem[Jones et al.]{Jones, Baker, and Williams}{1990}{key}...
+%%
+
+% \bibitem[ ()]{}
+
+% \end{thebibliography}
+
+\end{document}
+
+%%
+%% End of file `elsarticle-template-harv.tex'.
