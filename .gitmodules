@@ -1,0 +1,3 @@
+[submodule "hmeasure"]
+	path = hmeasure
+	url = https://github.com/canagnos/hmeasure
