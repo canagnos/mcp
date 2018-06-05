@@ -1,0 +1,193 @@
+Version: 1.0 
+Check: S3 generic/method consistency 
+Result: NOTE 
+    Found the following apparent S3 methods exported but not registered:
+     summary.hmeasure
+    See section ‘Registering S3 methods’ in the ‘Writing R Extensions’
+    manual. 
+Flavors: r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-patched-linux-x86_64, r-patched-solaris-x86, r-release-linux-x86_64
+
+Version: 1.0 
+Check: R code for possible problems 
+Result: NOTE 
+    HMeasure: no visible global function definition for ‘complete.cases’
+    HMeasure : HMeasure.single: no visible global function definition for
+     ‘chull’
+    HMeasure : HMeasure.single: no visible global function definition for
+     ‘pbeta’
+    plotROC: no visible global function definition for ‘plot’
+    plotROC: no visible global function definition for ‘lines’
+    plotROC: no visible global function definition for ‘legend’
+    plotROC: no visible global function definition for ‘dbeta’
+    plotROC: no visible global function definition for ‘density’
+    Undefined global functions or variables:
+     chull complete.cases dbeta density legend lines pbeta plot
+    Consider adding
+     importFrom("grDevices", "chull")
+     importFrom("graphics", "legend", "lines", "plot")
+     importFrom("stats", "complete.cases", "dbeta", "density", "pbeta")
+    to your NAMESPACE file. 
+Flavors: r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-ix86+x86_64, r-patched-linux-x86_64, r-patched-solaris-x86, r-release-linux-x86_64, r-release-windows-ix86+x86_64, r-release-osx-x86_64, r-oldrel-windows-ix86+x86_64, r-oldrel-osx-x86_64
+
+Version: 1.0 
+Check: files in ‘vignettes’ 
+Result: NOTE 
+    The following files look like leftovers/mistakes:
+     ‘hmeasure.dvi’
+    Please remove them from your package. 
+Flavors: r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-ix86+x86_64, r-patched-linux-x86_64, r-patched-solaris-x86, r-release-linux-x86_64, r-release-windows-ix86+x86_64, r-release-osx-x86_64, r-oldrel-windows-ix86+x86_64, r-oldrel-osx-x86_64
+
+Version: 1.0 
+Check: re-building of vignette outputs 
+Result: NOTE 
+    Error in re-building vignettes:
+     ...
+    Class labels have been switched from (No,Yes) to (0,1)
+    Class labels have been switched from (case,noncase) to (1,0)
+    Class labels have been switched from (No,Yes) to (0,1)
+    Class labels have been switched from (No,Yes) to (0,1)
+    Class labels have been switched from (No,Yes) to (0,1)
+    Class labels have been switched from (No,Yes) to (0,1)
+    Class labels have been switched from (No,Yes) to (0,1)
+    Class labels have been switched from (No,Yes) to (0,1)
+    Error in texi2dvi(file = file, pdf = TRUE, clean = clean, quiet = quiet, : 
+     Running 'texi2dvi' on 'hmeasure.tex' failed.
+    LaTeX errors:
+    ! LaTeX Error: File `multirow.sty' not found.
+    
+    Type X to quit or <RETURN> to proceed,
+    or enter new name. (Default extension: sty)
+    
+    ! Emergency stop.
+    <read *> 
+     
+    l.9 ^^M
+     
+    ! ==> Fatal error occurred, no output PDF file produced!
+    Calls: buildVignettes -> texi2pdf -> texi2dvi
+    Execution halted 
+Flavor: r-oldrel-osx-x86_64
+
+
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+
+
+Reverse depends:	fscaret
+Reverse suggests:	rattle
+
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+
+
+These have check NOTEs about "apparent S3 methods exported but not
+registered".
+
+As having all S3 methods registered greatly improves S3 method lookup in
+current development versions R, can you pls register the S3 methods for
+which the notes are not false positives (and which do not overwrite
+methods from base or recommended packages), ideally as quickly as
+possible?
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+
+
+Email
+qing.liu14@alumni.imperial.ac.uk
+
+
+Comment
+Hi Dr.Anagnostopoulos
+
+I am writing to enquire on the development status of the python package for H-measure. 
+
+When would you release a Python version? are still looking for people to join the project? 
+
+Many Thanks.
+
+-- more info
+I am Qing, an imperial stats alumni working in the credit scoring industry. My colleagues and I have been using AUC for measuring our model performance for ages until we came across Porf.Hand's paper about H-measure. We recognize the importance of having a universal ruler in terms of measuring and hence are eager to implement it in our work. Thank you very much!
+
+=================================================================================
+=================================================================================
+=================================================================================
+=================================================================================
+
+Thanks Dr  Christoforos for your interest in my work. Let me state my problem.
+
+In landslide susceptibility mapping modeling method used are either knowledge driven or data driven. The knowledge driven method needs expert judgement that which variable is more vulnerable than the other. The popularly used method is Analytical Hierarchy Process (AHP). On the other hand, data driven method (eg Logistic regression, frequency ratio method (FRM) etc.) needs sufficient data ( in this case landslide) to use as training and test samples. In the natural condition, it is difficult to have a complete inventory which can be used for training and test purposes. Motivated with these discrepancies, I have proposed one new knowledge-driven method, where minimum expert knowledge is required for comparing the variables severity and also does not need any knowledge of landslide occurrences (i.e. inventory data) and termed as Equal Weight Method (EWM). The main purpose of this method is to have a first hand knowledge on which portion of the area is more vulnerable for landslide. As this type of information is mainly required by the planners at block or municipal levels, where we may not expect an expert to judge the terrain vulnerability and also likely not to have a complete inventory data. I have used EWM successfully for seismic susceptibility mapping ( Som et al (2016), J Seismol V 20:827–863; DOI 10.1007/s10950-016-9562-z ).
+
+Mapping unit means an area, assumed to have homogenous property. I have used 50m x 50m grid as my mapping unit, having 61668 grid cells with 54 nos. of landslides in 54 nos. of grid cells.
+
+I have used AHP and FRM to compare my model EWM by Hmeasure. The results are as follows;
+
+
+> summary(results,show.all=TRUE)
+            H      Gini       AUC      AUCH        KS          MER          MWL
+AHP 0.2794256 0.5100472 0.7550236 0.7809349 0.4150315 0.0008756709 0.0010235828
+FRM 0.3534404 0.6171569 0.8085785 0.8276596 0.5068462 0.0008756709 0.0008629246
+EWM 0.2319877 0.4466337 0.7233169 0.7454274 0.2999698 0.0008756709 0.0012249187
+    Spec.Sens95 Sens.Spec95        ER      Sens         Spec    Precision    Recall
+AHP   0.1433447   0.3703704 0.2069989 0.5740741 0.7931929950 0.0024269944 0.5740741
+FRM   0.3341665   0.4259259 0.9991243 1.0000000 0.0000000000 0.0008756709 1.0000000
+EWM   0.3370360   0.3333333 0.9988973 1.0000000 0.0002272248 0.0008758698 1.0000000
+          TPR       FPR           F       Youden TP    FP    TN FN
+AHP 0.5740741 0.2068070 0.004833554 0.3672670691 31 12742 48871 23
+FRM 1.0000000 1.0000000 0.001749810 0.0000000000 54 61613     0  0
+EWM 1.0000000 0.9997728 0.001750207 0.0002272248 54 61599    14  0
+You can see EWM is a comparatively poor performer in terms of AUC and H, but encouraging w.r.t. TPR, TP. As my purpose to employ this method which can be used by a non domain expert, Pl. tell me how I can argue in favor of EWM.
+
+With regards,
+
+
+
+==================================================================
+======================
+
+Thank you for your interest in our work. 
+
+ 
+In the original H-measure work, it was recommended that a Beta(2, 1 + (a-1)*SR) be used. With the default value of SR being pi_1/pi_0, this yields a Beta(2, 1/pi_1). That behaviour is triggered by the first IF clause, by either leaving SR as the default or setting it to any positive value. 
+
+In our arXiv 2012 paper, we identified some arguments in favour of a different default distribution, Beta(1+pi_1, 1+pi_0). No value of SR would produce this distribution using the first IF clause, because we had constrained its shape in the way described in the previous paragraph. Consequently, we gave the user the chance to switch to this different default by setting the SR to a *negative* value. So negative values are used as a "flag" here, to switch to a different default. 
+
+So in effect, as a user, you can choose between three actions: 
+- set your SR to any positive value, yielding a Beta(2, 1 + (a-1) * SR) [recommended if you know what your costs are]
+- leave your SR unset to fall back to Beta(2, 1/pi_1) [old universal default, no longer recommended but available to use for consistency with original paper and/or earlier work]
+- set your SR to any negative value, yielding a Beta(1+pi_1, 1+pi_0) [recommended if you do not know what your costs are, or if you additionally want to use a universal default for comparison]
+
+Does this make sense? 
+
+A rehaul of the package is overdue, and we will modify the code to make it easier to understand what is happening here - I appreciate it's not clear from the documentation. 
+
+
+
+Thank you for making your hmeasure package available on the R CRAN. I have a query concerning your code for the HMeasure function that I was hoping you could answer. In your code, you set the shape parameters of the beta distribution as follows:
+
+        if (severity.ratio > 0) {
+            shape1 <- 2
+            shape2 <- 1 + (shape1 - 1) * 1/severity.ratio
+        }
+        if (severity.ratio < 0) {
+            shape1 <- pi1 + 1
+            shape2 <- pi0 + 1
+        }
+
+When would severity.ratio be less than zero (the second if statement)? If severity.ratio = pi1/pi0 > 0 (the default), does the first if statement above imply a Beta(pi1+1, pi0+1) distribution for the relative severity as recommended in your 2012 arXiv paper?
+
+Thanks for your assistance.
+
+Kind regards
+Miguel
+
+--
+Miguel Lacerda
+Adjunct Senior Lecturer
+Department of Statistical Sciences
+University of Cape Town

@@ -1,0 +1,78 @@
+---
+title: "Bibliography"
+author: "hmeasure.net"
+date: "5 February 2017"
+output: html_document
+bibliography: hmeasure.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installation
+
+The package is available on [](CRAN) so all you need to do is: 
+
+```{r, echo=TRUE, eval=FALSE}
+install.packages('hmeasure')
+library(hmeasure)
+```
+
+```{r, echo=FALSE}
+library(hmeasure)
+```
+## Documentation
+The package is extensively documented, and also has a detailed vignette outlining not only usage but also enough theory / terminology around classification performance:
+
+```{r, echo=TRUE, eval=FALSE}
+help(HMeasure)
+vignette('hmeasure')
+```
+
+## Example 
+
+The example below assumes you understand the basics of classification performance. If not, your best starting point is the package [https://cran.r-project.org/web/packages/hmeasure/vignettes/hmeasure.pdf](vignette). 
+
+We start by loading the classifier:
+
+```{r}
+# load the data
+library(MASS) 
+library(class) 
+data(Pima.te) 
+
+# split it into training and test
+pima.train <- Pima.te[seq(1,dim(Pima.te)[1],3),]
+pima.test <- Pima.te[-seq(1,dim(Pima.te)[1],3),]
+true.class<-pima.test[,8]
+
+# train an LDA classifier
+pima.lda <- lda(formula=type~., data=pima.train)
+out.lda <- predict(pima.lda,newdata=pima.test) 
+
+# obtain the predicted labels and classification scores
+scores.lda <- out.lda$posterior[,2]
+
+# train k-NN classifier
+class.knn <- knn(train=pima.train[,-8], test=pima.test[,-8],
+  cl=pima.train$type, k=9, prob=TRUE, use.all=TRUE)
+scores.knn <- attr(class.knn,"prob")
+# this is necessary because k-NN by default outputs
+# the posterior probability of the winning class
+scores.knn[class.knn=="No"] <- 1-scores.knn[class.knn=="No"] 
+
+# run the HMeasure function on the data frame of scores
+scores <- data.frame(LDA=scores.lda,kNN=scores.knn)
+results <- HMeasure(true.class,scores)
+
+# report aggregate metrics
+summary(results,show.all=TRUE)
+
+# produce the four different types of available plots
+par(mfrow=c(2,2))
+plotROC(results,which=1)
+plotROC(results,which=2)
+plotROC(results,which=3)
+plotROC(results,which=4)
+```
