@@ -1,3 +1,6 @@
 [submodule "hmeasure"]
 	path = hmeasure
 	url = https://github.com/canagnos/hmeasure
+[submodule "hmeasure-python"]
+	path = hmeasure-python
+	url = https://github.com/canagnos/hmeasure-python
